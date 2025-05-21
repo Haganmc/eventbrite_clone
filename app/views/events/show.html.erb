@@ -1,9 +1,39 @@
 <h1><%= @event.title %></h1>
 
-<p><strong>Description:</strong> <%= @event.description %></p>
-<p><strong>Date:</strong> <%= @event.date.strftime("%B %d, %Y at %I:%M %p") %></p>
-<p><strong>Location:</strong> <%= @event.location %></p>
-<p><strong>Created by:</strong> <%= @event.creator.email %></p>
+<section>
+  <h2>Event Details</h2>
+  <p><strong>Description:</strong> <%= @event.description %></p>
+  <p><strong>Date:</strong> <%= @event.date.strftime("%B %d, %Y at %I:%M %p") %></p>
+  <p><strong>Location:</strong> <%= @event.location %></p>
+  <p><strong>Created by:</strong> <%= @event.creator.email %></p>
+</section>
 
-<%= link_to 'Edit Event', edit_event_path(@event) if current_user == @event.creator %> |
-<%= link_to 'Back to Events', events_path %>
+<section>
+  <h2>Actions</h2>
+  <% if current_user == @event.creator %>
+    <%= link_to 'Edit Event', edit_event_path(@event), class: 'btn btn-primary' %>
+  <% end %>
+  <%= link_to 'Back to Events', events_path, class: 'btn btn-secondary' %>
+
+  <% if user_signed_in? %>
+    <% if current_user.attended_events.include?(@event) %>
+      <%= button_to 'Cancel Attendance', event_event_attendee_path(@event), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    <% else %>
+      <%= button_to 'Attend Event', event_event_attendee_path(@event), method: :post, class: 'btn btn-success' %>
+    <% end %>
+  <% end %>
+</section>
+
+<section>
+  <h2>Attendees</h2>
+  <% if @event.attendees.any? %>
+    <ul>
+      <% @event.attendees.each do |attendee| %>
+        <li><%= link_to attendee.email, user_path(attendee) %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No one has RSVP’d to this event yet.</p>
+  <% end %>
+</section>
+

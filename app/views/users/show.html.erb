@@ -1,16 +1,56 @@
 <h1><%= @user.email %>'s Profile</h1>
 
-<h2>Created Events</h2>
-<% if @created_events.any? %>
-  <ul>
-    <% @created_events.each do |event| %>
-      <li>
-        <strong><%= link_to event.title, event_path(event) %></strong><br>
-        <em><%= event.date.strftime("%B %d, %Y at %I:%M %p") %></em><br>
-        Location: <%= event.location %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>This user hasn't created any events yet.</p>
-<% end %>
+<hr>
+
+<section>
+  <h2>Created Events</h2>
+  <% if @created_events.any? %>
+    <ul>
+      <% @created_events.each do |event| %>
+        <li>
+          <strong><%= link_to event.title, event_path(event) %></strong><br>
+          <em><%= event.date.strftime("%B %d, %Y at %I:%M %p") %></em><br>
+          Location: <%= event.location %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>This user hasn't created any events yet.</p>
+  <% end %>
+</section>
+
+<hr>
+
+<section>
+  <h2>Attended Events</h2>
+
+  <h3>Upcoming Events</h3>
+  <% upcoming_events = @user.attended_events.select { |event| event.date > Time.current } %>
+  <% if upcoming_events.any? %>
+    <ul>
+      <% upcoming_events.each do |event| %>
+        <li>
+          <%= link_to event.title, event_path(event) %> —
+          <%= event.date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.location %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No upcoming events.</p>
+  <% end %>
+
+  <h3>Past Events</h3>
+  <% past_events = @user.attended_events.select { |event| event.date <= Time.current } %>
+  <% if past_events.any? %>
+    <ul>
+      <% past_events.each do |event| %>
+        <li>
+          <%= link_to event.title, event_path(event) %> —
+          <%= event.date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.location %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No past events.</p>
+  <% end %>
+</section>
