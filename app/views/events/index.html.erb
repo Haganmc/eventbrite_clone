@@ -1,1 +1,46 @@
-<h1>Private Events</h1>
+<h1>Upcoming Events</h1>
+<% if @upcoming_events.any? %>
+  <ul>
+    <% @upcoming_events.each do |event| %>
+      <li>
+        <%= link_to event.title, event_path(event) %> —
+        <%= event.date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.location %>
+        <% if user_signed_in? && event.attendees.include?(current_user) %>
+          | <%= button_to "Remove Myself", event_event_attendee_path(event, current_user.event_attendees.find_by(event: event)), method: :delete, data: { confirm: "Remove yourself from this event?" } %>
+        <% end %>
+        <% if user_signed_in? && event.creator == current_user %>
+          | <%= link_to "Edit", edit_event_path(event) %>
+          | <%= link_to "Delete", event, method: :delete, data: { confirm: "Are you sure?" } %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No upcoming events.</p>
+<% end %>
+
+<h1>Past Events</h1>
+<% if @past_events.any? %>
+  <ul>
+    <% @past_events.each do |event| %>
+      <li>
+        <%= link_to event.title, event_path(event) %> —
+        <%= event.date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.location %>
+        <% if user_signed_in? && event.attendees.include?(current_user) %>
+          | <%= button_to "Remove Myself", event_event_attendee_path(event, current_user.event_attendees.find_by(event: event)), method: :delete, data: { confirm: "Remove yourself from this event?" } %>
+        <% end %>
+        <% if user_signed_in? && event.creator == current_user %>
+          | <%= link_to "Edit", edit_event_path(event) %>
+          | <%= link_to "Delete", event, method: :delete, data: { confirm: "Are you sure?" } %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No past events.</p>
+<% end %>
+
+<% if user_signed_in? && event.creator == current_user %>
+  <%= link_to "Edit", edit_event_path(event) %> |
+  <%= link_to "Delete", event, method: :delete, data: { confirm: "Are you sure?" } %>
+<% end %>

@@ -37,3 +37,7 @@
   <% end %>
 </section>
 
+<% if user_signed_in? && event.creator == current_user %>
+  <%= link_to "Edit", edit_event_path(event) %> |
+  <%= link_to "Delete", event, method: :delete, data: { confirm: "Are you sure?" } %>
+<% end %>

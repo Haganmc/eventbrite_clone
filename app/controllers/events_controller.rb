@@ -18,6 +18,10 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
   end
 
+  def index
+    @upcoming_events = Event.upcoming
+    @past_events = Event.past
+  end
 
   private
 
