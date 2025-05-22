@@ -9,8 +9,8 @@
       <% @created_events.each do |event| %>
         <li>
           <strong><%= link_to event.title, event_path(event) %></strong><br>
-          <em><%= event.date.strftime("%B %d, %Y at %I:%M %p") %></em><br>
-          Location: <%= event.location %>
+          <em><%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %></em><br>
+          Location: <%= event.event_location %>
         </li>
       <% end %>
     </ul>
@@ -31,7 +31,7 @@
       <% upcoming_events.each do |event| %>
         <li>
           <%= link_to event.title, event_path(event) %> —
-          <%= event.date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.location %>
+          <%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.event_location %>
         </li>
       <% end %>
     </ul>
@@ -46,7 +46,7 @@
       <% past_events.each do |event| %>
         <li>
           <%= link_to event.title, event_path(event) %> —
-          <%= event.date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.location %>
+          <%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.event_location %>
         </li>
       <% end %>
     </ul>

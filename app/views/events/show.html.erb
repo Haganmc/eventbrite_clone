@@ -3,8 +3,8 @@
 <section>
   <h2>Event Details</h2>
   <p><strong>Description:</strong> <%= @event.description %></p>
-  <p><strong>Date:</strong> <%= @event.date.strftime("%B %d, %Y at %I:%M %p") %></p>
-  <p><strong>Location:</strong> <%= @event.location %></p>
+  <p><strong>Date:</strong> <%= @event.event_date.strftime("%B %d, %Y at %I:%M %p") %></p>
+  <p><strong>Location:</strong> <%= @event.event_location %></p>
   <p><strong>Created by:</strong> <%= @event.creator.email %></p>
 </section>
 

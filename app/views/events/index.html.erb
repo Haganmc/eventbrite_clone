@@ -4,7 +4,7 @@
     <% @upcoming_events.each do |event| %>
       <li>
         <%= link_to event.title, event_path(event) %> —
-        <%= event.date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.location %>
+        <%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.event_location %>
         <% if user_signed_in? && event.attendees.include?(current_user) %>
           | <%= button_to "Remove Myself", event_event_attendee_path(event, current_user.event_attendees.find_by(event: event)), method: :delete, data: { confirm: "Remove yourself from this event?" } %>
         <% end %>
@@ -25,7 +25,7 @@
     <% @past_events.each do |event| %>
       <li>
         <%= link_to event.title, event_path(event) %> —
-        <%= event.date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.location %>
+        <%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.event_location %>
         <% if user_signed_in? && event.attendees.include?(current_user) %>
           | <%= button_to "Remove Myself", event_event_attendee_path(event, current_user.event_attendees.find_by(event: event)), method: :delete, data: { confirm: "Remove yourself from this event?" } %>
         <% end %>
@@ -38,9 +38,4 @@
   </ul>
 <% else %>
   <p>No past events.</p>
-<% end %>
-
-<% if user_signed_in? && event.creator == current_user %>
-  <%= link_to "Edit", edit_event_path(event) %> |
-  <%= link_to "Delete", event, method: :delete, data: { confirm: "Are you sure?" } %>
 <% end %>
