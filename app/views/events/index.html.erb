@@ -1,41 +1,51 @@
-<h1>Upcoming Events</h1>
-<% if @upcoming_events.any? %>
-  <ul>
-    <% @upcoming_events.each do |event| %>
-      <li>
-        <%= link_to event.title, event_path(event) %> —
-        <%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.event_location %>
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Upcoming Events</h1>
+  <% if @upcoming_events.any? %>
+    <ul class="list-group mb-5">
+  <% @upcoming_events.each do |event| %>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong><%= link_to event.title, event_path(event), class: "text-decoration-none" %></strong><br>
+        <small><%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.event_location %></small>
+      </div>
+      <div class="d-flex">
         <% if user_signed_in? && event.attendees.include?(current_user) %>
-          | <%= button_to "Remove Myself", event_event_attendee_path(event, current_user.event_attendees.find_by(event: event)), method: :delete, data: { confirm: "Remove yourself from this event?" } %>
+          <%= button_to "Remove Myself", event_event_attendee_path(event, current_user.event_attendees.find_by(event_id: event)), method: :delete, data: { confirm: "Remove yourself from this event?" }, class: "btn btn-danger btn-sm me-2" %>
         <% end %>
         <% if user_signed_in? && event.creator == current_user %>
-          | <%= link_to "Edit", edit_event_path(event) %>
-          | <%= link_to "Delete", event, method: :delete, data: { confirm: "Are you sure?" } %>
+          <%= link_to "Edit", edit_event_path(event), class: "btn btn-primary btn-sm me-2" %>
+          <%= link_to "Delete", event, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
         <% end %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No upcoming events.</p>
-<% end %>
+      </div>
+    </li>
+  <% end %>
+</ul>
+  <% else %>
+    <p class="text-muted text-center">No upcoming events.</p>
+  <% end %>
 
-<h1>Past Events</h1>
-<% if @past_events.any? %>
-  <ul>
-    <% @past_events.each do |event| %>
-      <li>
-        <%= link_to event.title, event_path(event) %> —
-        <%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.event_location %>
-        <% if user_signed_in? && event.attendees.include?(current_user) %>
-          | <%= button_to "Remove Myself", event_event_attendee_path(event, current_user.event_attendees.find_by(event: event)), method: :delete, data: { confirm: "Remove yourself from this event?" } %>
-        <% end %>
-        <% if user_signed_in? && event.creator == current_user %>
-          | <%= link_to "Edit", edit_event_path(event) %>
-          | <%= link_to "Delete", event, method: :delete, data: { confirm: "Are you sure?" } %>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No past events.</p>
-<% end %>
+  <h1 class="text-center mb-4">Past Events</h1>
+  <% if @past_events.any? %>
+    <ul class="list-group">
+      <% @past_events.each do |event| %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong><%= link_to event.title, event_path(event), class: "text-decoration-none" %></strong><br>
+            <small><%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.event_location %></small>
+          </div>
+          <div>
+            <% if user_signed_in? && event.attendees.include?(current_user) %>
+              <%= button_to "Remove Myself", event_event_attendee_path(event, current_user.event_attendees.find_by(event: event.id)), method: :delete, data: { confirm: "Remove yourself from this event?" }, class: "btn btn-danger btn-sm" %>
+            <% end %>
+            <% if user_signed_in? && event.creator == current_user %>
+              <%= link_to "Edit", edit_event_path(event), class: "btn btn-primary btn-sm me-2" %>
+              <%= link_to "Delete", event, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-muted text-center">No past events.</p>
+  <% end %>
+</div>

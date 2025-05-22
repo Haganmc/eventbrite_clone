@@ -18,6 +18,8 @@ gem "kamal", require: false
 gem "thruster", require: false
 # gem "image_processing", "~> 1.2"
 gem "devise", ">= 4.9.4"
+gem "bootstrap", "~> 5.3.5"
+gem "dartsass-rails"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

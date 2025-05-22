@@ -1,56 +1,58 @@
-<h1><%= @user.email %>'s Profile</h1>
+<div class="container mt-5">
+  <h1 class="text-center mb-4"><%= @user.email.split('@').first %>'s Profile</h1>
 
-<hr>
+  <hr class="mb-4">
 
-<section>
-  <h2>Created Events</h2>
-  <% if @created_events.any? %>
-    <ul>
-      <% @created_events.each do |event| %>
-        <li>
-          <strong><%= link_to event.title, event_path(event) %></strong><br>
-          <em><%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %></em><br>
-          Location: <%= event.event_location %>
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p>This user hasn't created any events yet.</p>
-  <% end %>
-</section>
+  <section class="mb-5">
+    <h2 class="mb-3">Created Events</h2>
+    <% if @created_events.any? %>
+      <ul class="list-group">
+        <% @created_events.each do |event| %>
+          <li class="list-group-item">
+            <strong><%= link_to event.title, event_path(event), class: "text-decoration-none" %></strong><br>
+            <em><%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %></em><br>
+            <span>Location: <%= event.event_location %></span>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted">This user hasn't created any events yet.</p>
+    <% end %>
+  </section>
 
-<hr>
+  <hr class="mb-4">
 
-<section>
-  <h2>Attended Events</h2>
+  <section>
+    <h2 class="mb-3">Attended Events</h2>
 
-  <h3>Upcoming Events</h3>
-  <% upcoming_events = @user.attended_events.select { |event| event.date > Time.current } %>
-  <% if upcoming_events.any? %>
-    <ul>
-      <% upcoming_events.each do |event| %>
-        <li>
-          <%= link_to event.title, event_path(event) %> —
-          <%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.event_location %>
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p>No upcoming events.</p>
-  <% end %>
+    <h3 class="mb-2">Upcoming Events</h3>
+    <% upcoming_events = @user.attended_events.select { |event| event.event_date > Time.current } %>
+    <% if upcoming_events.any? %>
+      <ul class="list-group mb-4">
+        <% upcoming_events.each do |event| %>
+          <li class="list-group-item">
+            <%= link_to event.title, event_path(event), class: "text-decoration-none" %> —
+            <%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.event_location %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted">No upcoming events.</p>
+    <% end %>
 
-  <h3>Past Events</h3>
-  <% past_events = @user.attended_events.select { |event| event.date <= Time.current } %>
-  <% if past_events.any? %>
-    <ul>
-      <% past_events.each do |event| %>
-        <li>
-          <%= link_to event.title, event_path(event) %> —
-          <%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.event_location %>
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p>No past events.</p>
-  <% end %>
-</section>
+    <h3 class="mb-2">Past Events</h3>
+    <% past_events = @user.attended_events.select { |event| event.event_date <= Time.current } %>
+    <% if past_events.any? %>
+      <ul class="list-group">
+        <% past_events.each do |event| %>
+          <li class="list-group-item">
+            <%= link_to event.title, event_path(event), class: "text-decoration-none" %> —
+            <%= event.event_date.strftime("%B %d, %Y at %I:%M %p") %> at <%= event.event_location %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted">No past events.</p>
+    <% end %>
+  </section>
+</div>

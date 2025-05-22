@@ -7,4 +7,7 @@ class User < ApplicationRecord
   has_many :created_events, class_name: "Event", foreign_key: "user_id", dependent: :destroy
   has_many :event_attendees, foreign_key: "user_id", dependent: :destroy
   has_many :attended_events, through: :event_attendees, source: :attended_event
+
+  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :password, presence: true, length: { minimum: 6 }
 end

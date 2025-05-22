@@ -1,43 +1,55 @@
-<h1><%= @event.title %></h1>
+<div class="container mt-5">
+  <h1 class="text-center mb-4"><%= @event.title %></h1>
 
-<section>
-  <h2>Event Details</h2>
-  <p><strong>Description:</strong> <%= @event.description %></p>
-  <p><strong>Date:</strong> <%= @event.event_date.strftime("%B %d, %Y at %I:%M %p") %></p>
-  <p><strong>Location:</strong> <%= @event.event_location %></p>
-  <p><strong>Created by:</strong> <%= @event.creator.email %></p>
-</section>
+  <section class="mb-5">
+    <h2 class="h4">Event Details</h2>
+    <div class="card">
+      <div class="card-body">
+        <p><strong>Description:</strong> <%= @event.description %></p>
+        <p><strong>Date:</strong> <%= @event.event_date.strftime("%B %d, %Y at %I:%M %p") %></p>
+        <p><strong>Location:</strong> <%= @event.event_location %></p>
+        <p><strong>Created by:</strong> <%= @event.creator.email.split('@').first %></p>
+      </div>
+    </div>
+  </section>
 
-<section>
-  <h2>Actions</h2>
-  <% if current_user == @event.creator %>
-    <%= link_to 'Edit Event', edit_event_path(@event), class: 'btn btn-primary' %>
-  <% end %>
-  <%= link_to 'Back to Events', events_path, class: 'btn btn-secondary' %>
-
-  <% if user_signed_in? %>
-    <% if current_user.attended_events.include?(@event) %>
-      <%= button_to 'Cancel Attendance', event_event_attendee_path(@event), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-    <% else %>
-      <%= button_to 'Attend Event', event_event_attendee_path(@event), method: :post, class: 'btn btn-success' %>
-    <% end %>
-  <% end %>
-</section>
-
-<section>
-  <h2>Attendees</h2>
-  <% if @event.attendees.any? %>
-    <ul>
-      <% @event.attendees.each do |attendee| %>
-        <li><%= link_to attendee.email, user_path(attendee) %></li>
+  <section class="mb-5">
+    <h2 class="h4">Actions</h2>
+    <div class="d-flex gap-2">
+      <% if current_user == @event.creator %>
+        <%= link_to 'Edit Event', edit_event_path(@event), class: 'btn btn-primary' %>
       <% end %>
-    </ul>
-  <% else %>
-    <p>No one has RSVP’d to this event yet.</p>
-  <% end %>
-</section>
+      <%= link_to 'Back to Events', events_path, class: 'btn btn-secondary' %>
 
-<% if user_signed_in? && event.creator == current_user %>
-  <%= link_to "Edit", edit_event_path(event) %> |
-  <%= link_to "Delete", event, method: :delete, data: { confirm: "Are you sure?" } %>
-<% end %>
+      <% if user_signed_in? %>
+        <% if current_user.attended_events.include?(@event) %>
+          <%= button_to 'Cancel Attendance', event_event_attendee_path(@event), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+        <% else %>
+          <%= button_to 'Attend Event', event_event_attendee_path(@event), method: :post, class: 'btn btn-success' %>
+        <% end %>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h2 class="h4">Attendees</h2>
+    <% if @event.attendees.any? %>
+      <ul class="list-group">
+        <% @event.attendees.each do |attendee| %>
+          <li class="list-group-item">
+            <%= link_to attendee.email.split('@').first, user_path(attendee), class: "text-decoration-none" %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted">No one has RSVP’d to this event yet.</p>
+    <% end %>
+  </section>
+
+  <% if user_signed_in? && @event.creator == current_user %>
+    <div class="d-flex gap-2">
+      <%= link_to "Edit", edit_event_path(@event), class: "btn btn-warning" %>
+      <%= link_to "Delete", @event, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+    </div>
+  <% end %>
+</div>
