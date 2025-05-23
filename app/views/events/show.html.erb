@@ -18,6 +18,7 @@
     <div class="d-flex gap-2">
       <% if current_user == @event.creator %>
         <%= link_to 'Edit Event', edit_event_path(@event), class: 'btn btn-primary' %>
+        <%= link_to "Delete", @event, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
       <% end %>
       <%= link_to 'Back to Events', events_path, class: 'btn btn-secondary' %>
 
@@ -45,11 +46,4 @@
       <p class="text-muted">No one has RSVP’d to this event yet.</p>
     <% end %>
   </section>
-
-  <% if user_signed_in? && @event.creator == current_user %>
-    <div class="d-flex gap-2">
-      <%= link_to "Edit", edit_event_path(@event), class: "btn btn-warning" %>
-      <%= link_to "Delete", @event, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
-    </div>
-  <% end %>
 </div>

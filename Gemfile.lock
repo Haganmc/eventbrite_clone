@@ -113,6 +113,8 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    dockerfile-rails (1.7.9)
+      rails (>= 3.0.0)
     dotenv (3.1.8)
     drb (2.2.3)
     ed25519 (1.4.0)
@@ -408,6 +410,7 @@ DEPENDENCIES
   dartsass-rails
   debug
   devise (>= 4.9.4)
+  dockerfile-rails (>= 1.7)
   importmap-rails
   jbuilder
   kamal

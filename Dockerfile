@@ -6,11 +6,16 @@
 # docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name private-events private-events
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
+# Add this at the top of your Dockerfile
+
+
+
+
+
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.4.2
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
-
 # Rails app lives here
 WORKDIR /rails
 
@@ -46,10 +51,8 @@ COPY . .
 RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
-
-
-
+RUN apt-get update && apt-get install -y nodejs yarn
+RUN bundle exec rails assets:precompile
 
 # Final stage for app image
 FROM base

@@ -1,6 +1,5 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
-
   def new
     @event = current_user.created_events.build
   end
@@ -39,6 +38,7 @@ class EventsController < ApplicationController
   def destroy
     @event = Event.find(params[:id])
     @event.destroy
+    puts "Event deleted"
     redirect_to events_path, notice: "Event was successfully deleted."
   end
 
